@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.conf import settings
 from django.db.models import Sum, Count
-from .models import GitHubIssue, Donation
+from .models import GitHubIssue, SponsorAmount
 import json
 
 def index(request):
@@ -19,13 +19,13 @@ def repo_issues(request, owner, repo):
             issue_data = issue.data
 
             # Calculate donation amount and contributors for this issue
-            donation_stats = issue.donations.aggregate(
+            donation_stats = issue.sponsor_amounts.aggregate(
                 total_amount=Sum('amount'),
                 contributor_count=Count('id')
             )
 
             # Note: `or 0` is needed below because `Sum('amount')`
-            # returns `None` when there are no `Donation` records for
+            # returns `None` when there are no `SponsorAmount` records for
             # the GitHub issue.
             parsed_issue = {
                 'rank': len(parsed_issues) + 1,  # Simple ranking by order
