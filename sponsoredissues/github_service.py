@@ -5,26 +5,25 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from typing import Dict, List, Optional
 from decimal import Decimal
+from .github_auth import GitHubAppAuth
 
 logger = logging.getLogger(__name__)
 
 class GitHubSponsorService:
-    """Service for fetching GitHub Sponsors data via GraphQL API"""
+    """Service for fetching GitHub Sponsors data via GraphQL API using GitHub App installation tokens"""
 
     GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
     def __init__(self):
-        self.access_token = settings.GITHUB_ACCESS_TOKEN
-        if not self.access_token:
-            logger.warning("GitHub access token not configured. Sponsor data will not be available.")
+        self.github_app_auth = GitHubAppAuth()
 
-    def _make_graphql_request(self, query: str, variables: Dict = None) -> Optional[Dict]:
+    def _make_graphql_request(self, query: str, access_token: str, variables: Dict = None) -> Optional[Dict]:
         """Make a GraphQL request to GitHub API"""
-        if not self.access_token:
+        if not access_token:
             return None
 
         headers = {
-            'Authorization': f'Bearer {self.access_token}',
+            'Authorization': f'Bearer {access_token}',
             'Content-Type': 'application/json',
         }
 
@@ -55,7 +54,14 @@ class GitHubSponsorService:
         """
         Get sponsors received by a specific user.
         Returns list of sponsor data with tier information.
+        Uses the user's GitHub App installation token.
         """
+        # Get installation token for the maintainer (donee)
+        access_token = self.github_app_auth.get_installation_token_for_account(username)
+        if not access_token:
+            logger.debug(f"No GitHub App installation token available for user: {username}")
+            return []
+
         query = """
         query($login: String!) {
             user(login: $login) {
@@ -85,7 +91,7 @@ class GitHubSponsorService:
         """
 
         variables = {'login': username}
-        data = self._make_graphql_request(query, variables)
+        data = self._make_graphql_request(query, access_token, variables)
 
         if not data or not data.get('user'):
             return []
@@ -93,11 +99,22 @@ class GitHubSponsorService:
         sponsorships = data['user'].get('sponsorshipsAsMaintainer', {})
         return sponsorships.get('nodes', [])
 
-    def get_sponsorships_by_user(self, username: str) -> List[Dict]:
+    def get_sponsorships_by_user(self, sponsor_username: str, maintainer_username: str) -> List[Dict]:
         """
         Get sponsorships made by a specific user (who they sponsor).
         Returns list of sponsorship data.
+        Uses the maintainer's GitHub App installation token to query the sponsor's data.
+
+        Args:
+            sponsor_username: The username of the sponsor (who makes sponsorships)
+            maintainer_username: The username of the maintainer (used to get installation token)
         """
+        # Get installation token for the maintainer (donee)
+        access_token = self.github_app_auth.get_installation_token_for_account(maintainer_username)
+        if not access_token:
+            logger.debug(f"No GitHub App installation token available for maintainer: {maintainer_username}")
+            return []
+
         query = """
         query($login: String!) {
             user(login: $login) {
@@ -124,8 +141,8 @@ class GitHubSponsorService:
         }
         """
 
-        variables = {'login': username}
-        data = self._make_graphql_request(query, variables)
+        variables = {'login': sponsor_username}
+        data = self._make_graphql_request(query, access_token, variables)
 
         if not data or not data.get('user'):
             return []
@@ -161,7 +178,7 @@ class GitHubSponsorService:
         Calculate total sponsor dollars given by sponsor_username to recipient_username.
         This represents the cumulative amount available for allocation.
         """
-        sponsorships = self.get_sponsorships_by_user(sponsor_username)
+        sponsorships = self.get_sponsorships_by_user(sponsor_username, recipient_username)
         total = Decimal('0')
 
         for sponsorship in sponsorships:
