@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.db.models import Sum, Count
 from .models import GitHubIssue, SponsorAmount
+from .github_service import GitHubSponsorService
 import json
 
 def index(request):
@@ -52,6 +53,22 @@ def repo_issues(request, owner, repo):
     open_issues_count = sum(1 for issue in parsed_issues if issue['state'] == 'open')
     total_issues_count = len(parsed_issues)
 
+    # Calculate sponsor dollars for current user and repo owner
+    allocated_sponsor_dollars = 0  # Hard-coded as requested - will be updated in future iterations
+    unallocated_sponsor_dollars = 0
+
+    if request.user.is_authenticated:
+        github_service = GitHubSponsorService()
+        # For now, allocated sponsor dollars stays at $0 as requested
+        # allocated_sponsor_dollars = github_service.calculate_allocated_sponsor_dollars(
+        #     request.user, owner
+        # )
+
+        # Calculate unallocated sponsor dollars using real GitHub API data
+        unallocated_sponsor_dollars = github_service.calculate_unallocated_sponsor_dollars(
+            request.user, owner
+        )
+
     context = {
         'owner': owner,
         'repo': repo,
@@ -61,6 +78,8 @@ def repo_issues(request, owner, repo):
         'stars': 0,          # Hard-coded as requested
         'forks': 0,          # Hard-coded as requested
         'total_funding': 0,  # Hard-coded as requested
+        'allocated_sponsor_dollars': allocated_sponsor_dollars,
+        'unallocated_sponsor_dollars': unallocated_sponsor_dollars,
     }
 
     return render(request, 'repo_issues.html', context)
