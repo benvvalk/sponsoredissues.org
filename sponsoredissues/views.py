@@ -59,12 +59,6 @@ def repo_issues(request, owner, repo):
 
     if request.user.is_authenticated:
         github_service = GitHubSponsorService()
-        # For now, allocated sponsor dollars stays at $0 as requested
-        # allocated_sponsor_dollars = github_service.calculate_allocated_sponsor_dollars(
-        #     request.user, owner
-        # )
-
-        # Calculate unallocated sponsor dollars using real GitHub API data
         unallocated_sponsor_dollars = github_service.calculate_unallocated_sponsor_dollars(
             request.user, owner
         )

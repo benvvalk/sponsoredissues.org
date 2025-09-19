@@ -91,6 +91,15 @@ GITHUB_ACCESS_TOKEN = env.str('GITHUB_ACCESS_TOKEN', default=None)
 SOCIALACCOUNT_ONLY = True
 ACCOUNT_EMAIL_VERIFICATION = "none" # required for `SOCIALACCOUNT_ONLY = True`
 
+# Save user's OAuth access token and refresh token to the database.
+#
+# We need the access token so that we can issue GraphQL queries on
+# behalf of the logged-in user, in order to calculate the total amount
+# donated to particular developers. Many details about sponsorships
+# (e.g. dollar amounts) are only accessible to the sponsor (donor) and
+# maintainer (donee).
+SOCIALACCOUNT_STORE_TOKENS = True
+
 ROOT_URLCONF = 'sponsoredissues.urls'
 
 TEMPLATES = [
