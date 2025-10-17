@@ -74,18 +74,16 @@ def calculate_trending_issues(limit=10):
 
             # Extract owner/repo from URL (e.g., "benvvalk/qutebrowser")
             url_parts = issue.url.split('/')
-            repo_name = ''
             if len(url_parts) >= 5:
                 owner = url_parts[3]
                 repo = url_parts[4]
-                repo_name = f"{owner}/{repo}"
 
             trending_issues.append({
-                'issue': issue,
+                'owner': owner,
+                'repo': repo,
                 'title': issue_data.get('title', 'No title'),
                 'number': issue_data.get('number', 0),
                 'url': issue.url,
-                'repo_name': repo_name,
                 'trending_score': trending_score,
                 'recent_funding_cents': recent_funding_cents,
                 'unique_sponsor_count': unique_sponsor_count,

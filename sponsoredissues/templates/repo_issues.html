@@ -615,8 +615,8 @@
         donationInput.value = cents_to_dollars(currentIssue.user_donation_cents);
         donationInput.max = cents_to_dollars(currentIssue.user_donation_cents + {{ unallocated_sponsor_cents }})
 
-        const donateForm = document.getElementById('donateForm')
-        donateForm.action = `/gh/{{ owner }}/{{ repo }}/issue/${currentIssue.number}/donate`;
+        const donateForm = document.getElementById('donateForm');
+        donateForm.action = "{% url 'donate_to_issue' owner repo 1 %}".replace('1', currentIssue.number.toString());
 
         document.getElementById('donateModal').style.display = 'block';
 
