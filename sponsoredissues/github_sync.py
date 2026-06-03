@@ -3,6 +3,7 @@ import logging
 from django.utils import timezone
 from enum import Enum
 from requests.exceptions import HTTPError
+from sponsoredissues.beta import maintainer_allowed_to_install_github_app
 from sponsoredissues.github_api import github_api, github_app_installation_is_suspended, github_issue_has_sponsoredissues_label
 from sponsoredissues.github_app import github_app_installation_query_json, github_app_installation_query_issues_with_sponsoredissues_label, github_app_installation_query_issue_urls, github_app_installation_query_repos, github_app_installation_query_token
 from sponsoredissues.github_sponsors import GitHubSponsorService
@@ -97,6 +98,16 @@ def github_sync_app_installation(installation_id, base_logger=default_logger):
     logger.info(f'GitHub account is "{account_login}"')
     account_id = installation_json['account']['id']
     installation_url = installation_json['html_url']
+
+    # enforce maintainer allowlist during website beta
+
+    if not maintainer_allowed_to_install_github_app(account_login):
+        logger.info("github username is not in `BETA_MAINTAINERS` (beta users), "
+                    "and does not have any funded issues that need to be preserved")
+        Maintainer.objects.filter(github_account_id=account_id).delete();
+        if installation:
+            github_sync_app_installation_remove(installation, logger)
+        return
 
     maintainer = github_sync_maintainer(account_id, access_token=installation_token, logger=logger)
 

@@ -122,18 +122,34 @@ GITHUB_APP_PRIVATE_KEY = env_str('GITHUB_APP_PRIVATE_KEY')
 # For authenticating webhook notifications from GitHub
 GITHUB_WEBHOOK_SECRET = env_str('GITHUB_WEBHOOK_SECRET')
 
+# Comma-separated list of GitHub usernames that are allowed to install
+# the `sponsoredissues-maintainer` GitHub App, in order to create a
+# sponsored issues page.
+#
+# The purpose of `BETA_MAINTAINERS` is to restrict the number of
+# maintainers during the website beta.
+#
+# If this env var is not set, it means that any GitHub account is
+# allowed to install the app, i.e. any GitHub account can create a
+# sponsored issues page.
+BETA_MAINTAINERS = env_list('BETA_MAINTAINERS', required=False)
+
 # Comma separated list of GitHub usernames that are allowed to "Sign
 # in with GitHub".
 #
-# Setting `ALLOWED_GITHUB_USERS` is optional. If the variable is not
-# set, any GitHub user will be allowed to log in.
+# This list implicitly includes any users in `BETA_MAINTAINERS`, so
+# there is no need to repeat the same usernames in both
+# `BETA_MAINTAINERS` and `BETA_USERS`.
+#
+# Setting `BETA_USERS` is optional. If the variable is not
+# set, any GitHub account will be allowed to "Sign in with GitHub".
 #
 # Users that are not allowed to log in will see the custom message
 # defined in GITHUB_LOGIN_DISABLED_MESSAGE.
 #
 # Example value:
-# ALLOWED_GITHUB_USERS=user1,user2,user3
-ALLOWED_GITHUB_USERS = env_list('ALLOWED_GITHUB_USERS', required=False)
+# BETA_USERS=user1,user2,user3
+BETA_USERS = env_list('BETA_USERS', required=False)
 
 # Custom message shown to users who are not in the whitelist
 GITHUB_LOGIN_DISABLED_MESSAGE = env_str(

@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.conf import settings
 
+from .beta import user_allowed_to_sign_in_with_github
 
 class GitHubAccountAdapter(DefaultSocialAccountAdapter):
     """
@@ -22,21 +23,15 @@ class GitHubAccountAdapter(DefaultSocialAccountAdapter):
         Called after a user successfully authenticates with GitHub but before
         they are logged into Django.
 
-        If ALLOWED_GITHUB_USERS is configured and the user is not in the list,
+        If BETA_USERS is configured and the user is not in the list,
         we reject the login and show a custom message.
         """
-        # Check if whitelist is configured
-        allowed_users = getattr(settings, 'ALLOWED_GITHUB_USERS', [])
-
-        # If no whitelist is configured, allow all users
-        if not allowed_users:
-            return
-
         # Get the GitHub username from the social login data
         github_username = sociallogin.account.extra_data.get('login')
 
-        # Check if user is in the whitelist
-        if github_username not in allowed_users:
+        # Check if user is allowed to "Sign in with GitHub",
+        # based on current values of `BETA_USERS` and `BETA_MAINTAINERS`. 
+        if not user_allowed_to_sign_in_with_github(github_username):
             # Get the custom message
             message = getattr(
                 settings,

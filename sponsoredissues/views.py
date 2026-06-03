@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbid
 from django.utils import timezone
 from datetime import timedelta
 from pprint import pformat
+from .beta import maintainer_allowed_to_install_github_app
 from .models import GitHubAppInstallation, GitHubIssue, GitHubRepo, IssueSponsorship, Maintainer
 from .github_api import github_issue_has_sponsoredissues_label
 from .github_sync import github_sync_issue
@@ -522,6 +523,16 @@ def github_webhook(request):
                 logger.info(f"webhook: app installation doesn't exist in database, nothing to delete: {installation_url}")
             return HttpResponse(f"Processed event: event_type={event_type}, action={action}", status=200)
         elif action in ['created', 'unsuspend']:
+            # enforce restricted maintainer list during website beta
+            github_username = payload['installation']['account']['login']
+            if not maintainer_allowed_to_install_github_app(github_username):
+                return HttpResponseForbidden(
+                    "Sorry, you're not in the approved list of beta users for \n"
+                    "sponsoredissues.org, so you're not allowed to install the app. \n"
+                    "You can request beta access at: \n"
+                    "https://github.com/benvvalk/sponsoredissues.org/issues/7"
+                )
+
             # start background sync task via Celery
             task_sync_github_app_installation.delay(installation_id)
             return HttpResponse(f"Processed event: event_type={event_type}, action={action}", status=200)
