@@ -522,7 +522,7 @@ def github_webhook(request):
             else:
                 logger.info(f"webhook: app installation doesn't exist in database, nothing to delete: {installation_url}")
             return HttpResponse(f"Processed event: event_type={event_type}, action={action}", status=200)
-        elif action in ['created', 'unsuspend']:
+        elif action in ['created', 'unsuspend', 'installation_repositories']:
             # enforce restricted maintainer list during website beta
             github_username = payload['installation']['account']['login']
             if not maintainer_allowed_to_install_github_app(github_username):
