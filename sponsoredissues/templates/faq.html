@@ -255,25 +255,38 @@
                 <div class="faq-answer">
                     <p>To get started as a maintainer:</p>
                     <ol>
-                        <li><a href="https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-personal-account">Set up a GitHub Sponsors profile</a> for your GitHub account.
+                        <li>
+                            Request beta access on <a href="https://github.com/benvvalk/sponsoredissues.org/issues/7">this GitHub issue</a>, so that you will be able to create a sponsored issues page.
+                        </li>
+                        <li>
+                            <a href="https://docs.github.com/en/sponsors/receiving-sponsorships-through-github-sponsors/setting-up-github-sponsors-for-your-personal-account">Set up a GitHub Sponsors profile</a> for your GitHub account.
+                            It is a good idea to do this step early, because it's usually the most time-consuming step (creating a Stripe account, providing photo ID, entering bank account details, etc.). While it's possible to create a sponsored issues page without a GitHub Sponsors profile, your users won't be able to send donations to you or vote on issues.
                         </li>
                         <li>
                             <a href=" https://github.com/apps/sponsoredissues-maintainer">Install the GitHub App</a> for <strong>sponsoredissues.org</strong>.
+                            This is what triggers creation of your sponsored issues page.
                         </li>
-                        <li>Create a custom GitHub issue label called <span class="sponsoredissues-label">sponsoredissues.org</span>, and add the label to the GitHub issues you want to appear on your sponsored issues page. Advice: Choose your sponsored issues wisely! In general, sponsored issues should be:
+                        <li>
+                            Confirm that your (empty) sponsored issues page now exists at <code style="white-space: nowrap;">https://sponsoredissues.org/<strong>$YOUR_GITHUB_USERNAME</strong></code>. If something went wrong in a previous step (e.g. you didn't get beta access before installing the GitHub App), you will get a HTTP 404 page instead.                           
+                        </li>
+                        <li>
+                            Create your first sponsored issue, by adding an issue label called <span class="sponsoredissues-label">sponsoredissues.org</span> to one of your issues on GitHub. The issue must belong to a public GitHub repo, and the issue label must exactly match the string <code>"sponsoredissues.org"</code> (without quotes).
+                            Lastly, please choose your first sponsored issue wisely! In general, sponsored issues should be:
                             <ul>
                                 <li>Technically feasible</li>
                                 <li>Something you actually intend to do</li>
-                                <li>Something that your users would understand and care about (e.g. a juicy new feature)</li>
+                                <li>Something your users care about (e.g. a highly-requested feature or bug fix)</li>
                             </ul>
                         </li>
-                        <li>Check that the issues you labeled with <span class="sponsoredissues-label">sponsoredissues.org</span> are correctly showing on your sponsored issues page. The URL for your sponsored issues page is <code style="white-space: nowrap;">https://sponsoredissues.org/<strong>$YOUR_GITHUB_USERNAME</strong></code> (e.g. <a href="https://sponsoredissues.org/benvvalk">https://sponsoredissues.org/benvvalk</a>).
                         <li>
-                            Optional (but recommended): Let your users know that they can vote on issues if they sponsor you! Some suggestions:
+                            Confirm that your first sponsored issue now appears on your sponsored issues page at <code style="white-space: nowrap;">https://sponsoredissues.org/<strong>$YOUR_GITHUB_USERNAME</strong></code>. This should happen shortly after you add the <span class="sponsoredissues-label">sponsoredissues.org</span> label to the issue on GitHub.
+                        </li>
+                        <li>
+                            That's it! When you're ready, let your users know that they are able to vote on issues when they sponsor you. Here are some polite ways to do that:
                             <ul>
-                                <li>Add a link to your sponsored issues page from your GitHub Sponsors profile. Example: <a href="https://github.com/sponsors/benvvalk">My GitHub Sponsors page</a></li>
-                                <li>Add a link to your sponsored issues page in the <code>README.md</code> for your repo. Example: <a href="https://github.com/benvvalk/sponsoredissues.org#support-sponsoredissuesorg-and-vote-for-improvements">My README.md</a> for <strong>sponsoredissues.org</strong>.</li>
-                                <li>Add your sponsor issues page as a "Custom" link in your <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository#about-funding-files">.github/FUNDING.yml</a> file. Example: <a href=" https://github.com/benvvalk/sponsoredissues.org/blob/main/.github/FUNDING.yml">My funding.yml</a> for <strong>sponsoredissues.org</strong></li>
+                                <li>Add a link to your sponsored issues page from your GitHub Sponsors profile. For example, here's <a href="https://github.com/sponsors/benvvalk">my GitHub Sponsors page</a>.</li>
+                                <li>Add a link to your sponsored issues page in the <code>README.md</code> for your repo(s). For example, here's <a href="https://github.com/benvvalk/sponsoredissues.org#support-sponsoredissuesorg-and-vote-for-improvements">my README.md for the sponsoredissues.org repo</a>.</li>
+                                <li>Add your sponsored issues page as a <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository#about-funding-files">"custom" link in your .github/FUNDING.yml file</a>. That will make the link appear in the sponsors section of your GitHub repo page (in the right margin). For example, here's <a href=" https://github.com/benvvalk/sponsoredissues.org/blob/main/.github/FUNDING.yml">my funding.yml for the sponsoredissues.org repo</a>.</li>
                             </ul>
                         </li>
                     </ol>
