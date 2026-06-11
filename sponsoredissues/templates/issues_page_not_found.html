@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}sponsoredissues.org - page not found{% endblock %}
+
+{% block head %}
+<style>
+    body {
+        font-family: Verdana, Geneva, sans-serif;
+        font-size: 12pt;
+        background: #f8f9fa;
+        color: #495057;
+        line-height: 1.6;
+    }
+
+    .container {
+        background: white;
+        padding: 16px 20px;
+        margin-bottom: 0;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        color: #1e3a8a;
+        font-weight: 700;
+        margin: 0px 8px 0px 0px;
+    }
+
+    p {
+        line-height: 1.4;
+        color: #333;
+        margin: 16px 0px 16px 0px;
+    }
+
+    ol {
+        list-style-position: inside;
+        padding-left: 0;
+    }
+
+    ol li {
+        color: #333;
+        margin: 8px 0px 8px 0px;
+    }
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>HTTP 404: GitHub user <code>{{ owner }}</code> does not have a sponsored issues page</h1>
+
+    <p>
+        If you are owner of the <code>{{ owner }}</code> GitHub account, and you are
+        trying to set up your sponsored issues page, please ensure that:
+    </p>
+
+    <p>
+        <ol>
+            <li>
+                You have been granted beta access (currently required to create
+                a sponsored issues page). You can request beta access on
+                <a href="https://github.com/benvvalk/sponsoredissues.org/issues/7">this issue</a>.
+            </li>
+            <li>
+                You have installed the <a href="https://github.com/apps/sponsoredissues-maintainer">sponsoredissues-maintainer</a> GitHub App.
+                This is what triggers creation of your sponsored issues page,
+                but only if you have already been granted beta access (as per the previous point).
+            </li>
+        </ol>
+    </p>
+
+    <p>
+        If you installed the GitHub App before you were granted beta access,
+        you will need to uninstall and reinstall the app.
+    </p>
+
+    <p>
+        For more detailed instructions, see <a href="{% url 'faq' %}#get-started">How do I get started as a maintainer?</a>
+        from the <a href="{% url 'faq' %}">FAQ</a>.
+    </p>
+</div>
+{% endblock %}

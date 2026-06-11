@@ -168,6 +168,8 @@ def faq(request):
     return render(request, 'faq.html')
 
 def owner_issues(request, owner, repo=None, issue_number=None):
+    context = { 'owner': owner }
+
     # Existence check for maintainer: Return HTTP 404 unless
     # `owner` (GitHub username) exists in our database as a
     # `Maintainer`.
@@ -181,13 +183,13 @@ def owner_issues(request, owner, repo=None, issue_number=None):
     # (2) the maintainer has issues with non-zero funding.
     maintainer = Maintainer.objects.filter(github_user_json__login=owner).first()
     if not maintainer:
-        raise Http404(f'GitHub account "{owner}" has not installed the "sponsoredissues-maintainer" GitHub App')
+        return render(request, 'issues_page_not_found.html', context, status=404)
 
     # Existence check for app installation: Return HTTP 404 unless our
     # database shows that `owner` has installed the
     # "sponsoredissues-maintainer" GitHub App.
     if not GitHubAppInstallation.objects.filter(data__account__login=owner).exists():
-        raise Http404(f'GitHub account "{owner}" has not installed the "sponsoredissues-maintainer" GitHub App')
+        return render(request, 'issues_page_not_found.html', context, status=404)
 
     # Existence check for repo: If optional repo component is included
     # in URL, validate that either: (1) The
