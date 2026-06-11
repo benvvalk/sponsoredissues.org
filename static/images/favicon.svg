@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
+   sodipodi:docname="favicon.svg"
+   inkscape:export-filename="favicon.png"
+   inkscape:export-xdpi="3.115011"
+   inkscape:export-ydpi="3.115011"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.52221046"
+     inkscape:cx="22.979241"
+     inkscape:cy="424.15849"
+     inkscape:window-width="1918"
+     inkscape:window-height="1032"
+     inkscape:window-x="1"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1"
+     showguides="true" />
+  <defs
+     id="defs1">
+    <rect
+       x="148.94712"
+       y="450.90356"
+       width="59.578849"
+       height="113.74144"
+       id="rect3" />
+    <rect
+       x="306.69567"
+       y="165.87293"
+       width="56.288992"
+       height="58.316638"
+       id="rect7" />
+    <rect
+       x="278.26031"
+       y="282.99953"
+       width="10.832518"
+       height="76.504659"
+       id="rect6" />
+    <rect
+       x="316.17412"
+       y="205.14081"
+       width="44.684137"
+       height="52.808526"
+       id="rect5" />
+    <rect
+       x="348.67168"
+       y="196.33939"
+       width="188.89203"
+       height="106.97112"
+       id="rect4" />
+    <rect
+       x="317.8795"
+       y="195.32355"
+       width="132.13064"
+       height="132.13064"
+       id="rect2" />
+    <rect
+       x="290.11292"
+       y="189.57874"
+       width="169.38392"
+       height="290.07164"
+       id="rect1" />
+    <rect
+       x="306.69567"
+       y="165.87293"
+       width="44.007102"
+       height="60.255884"
+       id="rect10" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g7"
+       transform="matrix(1.5373135,0,0,1.5373135,-55.633021,-25.337877)"
+       inkscape:export-filename="favicon.png"
+       inkscape:export-xdpi="3.115011"
+       inkscape:export-ydpi="3.115011">
+      <circle
+         style="fill:#1e3a8a;fill-opacity:1;stroke-width:0.264583"
+         id="path1"
+         cx="101.96539"
+         cy="71.059113"
+         r="42.4328"
+         inkscape:export-filename="favicon.png"
+         inkscape:export-xdpi="3.115011"
+         inkscape:export-ydpi="3.115011" />
+      <text
+         xml:space="preserve"
+         transform="matrix(2.3177374,0,0,2.3177374,-635.51461,-362.22326)"
+         id="text7"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:37.3333px;font-family:'Adwaita Sans';-inkscape-font-specification:'Adwaita Sans, @opsz=32';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;font-variation-settings:'opsz' 32;text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect7);display:inline;fill:#ffffff;fill-opacity:1"><tspan
+           x="306.69531"
+           y="200.43046"
+           id="tspan1">S</tspan></text>
+      <text
+         xml:space="preserve"
+         transform="matrix(0.1721076,0,0,0.1721076,36.188468,16.481919)"
+         id="text2"
+         style="font-size:37.3333px;font-family:'DejaVu Sans';-inkscape-font-specification:'DejaVu Sans';text-align:start;writing-mode:lr-tb;direction:ltr;white-space:pre;shape-inside:url(#rect3);display:inline;fill:#ffffff" />
+    </g>
+  </g>
+</svg>
