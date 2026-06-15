@@ -44,6 +44,13 @@
             padding: 8px 8px;
         }
 
+
+        .logo {
+            width: 24px;
+            height: 24px;
+            display: block;
+        }
+
         .site-name {
             color: white;
             font-weight: bold;
@@ -257,6 +264,9 @@
 <body>
     <div class="header">
         <div class="header-content">
+            <a href="/">
+                <img class="logo" src="{% static 'images/logo.png' %}">
+            </a>
             <a href="/" class="site-name">sponsoredissues.org</a>
             {% block nav_links %}{% endblock %}
             <div class="auth-section">
