@@ -1,15 +1,17 @@
-from django.test import TestCase
 from django.contrib.auth.models import User
 
 from sponsoredissues.models import GitHubAppInstallation, GitHubRepo, GitHubIssue, IssueSponsorship, Maintainer
+from sponsoredissues.tests.base import BaseTestCase
 from sponsoredissues.tests.mock_data import MockData
 
 
-class GitHubAppInstallationDeleteTest(TestCase):
+class GitHubAppInstallationDeleteTest(BaseTestCase):
     """Tests for the GitHubAppInstallation_delete signal handler."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Create test user for funded issues
         self.user = User.objects.create_user(username='testuser', email='test@example.com')
 
@@ -36,6 +38,10 @@ class GitHubAppInstallationDeleteTest(TestCase):
             url='https://github.com/testuser/repo2',
             app_installation=self.installation
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     def test_delete_removes_unfunded_issues_on_instance_delete(self):
         """Test that unfunded issues are deleted when calling delete() on an installation instance."""
@@ -566,9 +572,11 @@ class GitHubAppInstallationDeleteTest(TestCase):
         self.assertTrue(GitHubIssue.objects.filter(url=funded_issue.url).exists())
         self.assertEqual(GitHubIssue.objects.count(), 1)
 
-class GithubIssueTest(TestCase):
+class GithubIssueTest(BaseTestCase):
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Create test user for funded issues
         self.user = User.objects.create_user(username='testuser', email='test@example.com')
 
@@ -591,6 +599,10 @@ class GithubIssueTest(TestCase):
             url='https://github.com/testuser/repo1',
             app_installation=self.installation
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     def test_delete_force_with_funded_issue(self):
         # create funded issue

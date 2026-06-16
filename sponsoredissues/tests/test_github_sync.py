@@ -1,4 +1,3 @@
-from django.test import TestCase
 from typing import Final
 from unittest.mock import patch
 import time
@@ -6,14 +5,17 @@ import time
 from sponsoredissues.github_sync import github_sync_app_installation, github_sync_app_installation_issues, github_sync_app_installation_repos, github_sync_issue
 from sponsoredissues.models import GitHubAppInstallation, GitHubRepo, GitHubIssue, IssueSponsorship, Maintainer
 from django.contrib.auth.models import User
+from sponsoredissues.tests.base import BaseTestCase
 from sponsoredissues.tests.mock_data import MockData
 
 
-class SyncReposForInstallationTest(TestCase):
+class SyncReposForInstallationTest(BaseTestCase):
     """Tests for the _sync_installation_repos method."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Mock maintainer
         maintainer_user_id = 1
         maintainer_user_name = 'maintainer'
@@ -31,6 +33,10 @@ class SyncReposForInstallationTest(TestCase):
             data=installation_json,
             maintainer=self.maintainer
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.github_sync.github_app_installation_query_repos')
     def test_add_new_public_repo(self, mock_query_repos):
@@ -101,11 +107,13 @@ class SyncReposForInstallationTest(TestCase):
         self.assertEqual(GitHubRepo.objects.count(), 0)
 
 
-class SyncIssuesForInstallationTest(TestCase):
+class SyncIssuesForInstallationTest(BaseTestCase):
     """Tests for the _sync_installation_issues method."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Mock user
         self.user = User.objects.create_user(
             username=MockData.DEFAULT_USER_NAME,
@@ -136,6 +144,10 @@ class SyncIssuesForInstallationTest(TestCase):
             url=repo_json['html_url'],
             app_installation=self.installation,
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.github_sync.github_app_installation_query_issue_urls')
     @patch('sponsoredissues.github_sync.github_app_installation_query_issues_with_sponsoredissues_label')
@@ -361,11 +373,13 @@ class SyncIssuesForInstallationTest(TestCase):
         self.assertFalse(GitHubIssue.objects.filter(url=unfunded_issue_json['html_url']).exists())
         self.assertEqual(GitHubIssue.objects.count(), 1)
 
-class SyncAppInstallationTest(TestCase):
+class SyncAppInstallationTest(BaseTestCase):
     """Tests for `github_sync_app_installation`."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Create test user for funded issues
         self.user = User.objects.create_user(username='testuser', email='test@example.com')
 
@@ -384,6 +398,10 @@ class SyncAppInstallationTest(TestCase):
             github_user_json = MockData.user_json(maintainer2_user_id, maintainer2_user_name),
             github_sponsors_profile_url = f'https://github.com/sponsors/{maintainer2_user_name}'
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.github_sync.github_sync_maintainer')
     @patch('sponsoredissues.github_sync.github_sync_app_installation_repos')
@@ -556,10 +574,12 @@ class SyncAppInstallationTest(TestCase):
         self.assertEqual(mock_sync_repos.call_count, 1)
         self.assertEqual(mock_sync_issues.call_count, 1)
 
-class SyncIssueTest(TestCase):
+class SyncIssueTest(BaseTestCase):
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
+
         # Mock user
         self.user = User.objects.create_user(
             username=MockData.DEFAULT_USER_NAME,
@@ -590,6 +610,10 @@ class SyncIssueTest(TestCase):
             url=repo_json['html_url'],
             app_installation=self.installation,
         )
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     def test_add_issue_with_label(self):
         """Test adding a new issue with `sponsoredissues.org` label."""

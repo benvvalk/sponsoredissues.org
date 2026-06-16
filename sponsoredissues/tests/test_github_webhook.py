@@ -1,9 +1,10 @@
 import requests
 import sponsoredissues.views
 
-from django.test import TestCase
 from typing import Final
 from unittest.mock import patch
+
+from sponsoredissues.tests.base import BaseTestCase
 
 class MockData:
     DEFAULT_USER_NAME: Final[str] = 'test-user'
@@ -48,7 +49,7 @@ class MockData:
         prepared_request = request.prepare()
         return prepared_request
 
-class GitHubWebhookInstallationEventTest(TestCase):
+class GitHubWebhookInstallationEventTest(BaseTestCase):
     """
     Tests to verify that `sponsoredissues.views.github_webhook` calls
     the right methods in response to various webhook event types
@@ -61,6 +62,14 @@ class GitHubWebhookInstallationEventTest(TestCase):
     dedicated tests in `test_models.py` and `test_github_sync.py`,
     respectively.
     """
+
+    def setUp(self):
+        """Set up test fixtures."""
+        super().setUp()
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.views.task_sync_github_app_installation')
     @patch('sponsoredissues.views._verify_webhook_signature')

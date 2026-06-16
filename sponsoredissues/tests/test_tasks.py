@@ -1,7 +1,7 @@
 import uuid
 
 from unittest.mock import patch
-from django.test import TestCase, override_settings
+from django.test import override_settings
 from celery.exceptions import SoftTimeLimitExceeded
 from redis.exceptions import LockError, LockNotOwnedError
 from typing import Any
@@ -12,6 +12,7 @@ from sponsoredissues.tasks import (
     TASK_WAIT_RETRY_TIME
 )
 from sponsoredissues.models import GitHubAppInstallation, Maintainer
+from sponsoredissues.tests.base import BaseTestCase
 
 class MockRedisLock:
     """Mock Redis lock for testing Celery tasks without a Redis server."""
@@ -59,12 +60,18 @@ class MockRedisClient:
     def lock(self, name: str, timeout=None, blocking=True):
         return MockRedisLock(self.mock_redis_db, name, timeout, blocking)
 
-class TaskLockAcquireContextManagerTest(TestCase):
+class TaskLockAcquireContextManagerTest(BaseTestCase):
     """Test the task_app_installation_lock_acquire context manager directly."""
 
     def setUp(self):
+        """Set up test fixtures."""
+        super().setUp()
         self.mock_redis_client = MockRedisClient()
         self.lock_url = 'https://example.com'
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.tasks.task_sleep_after_unexpected_exception')
     def test_context_manager_acquires_and_releases_lock(self, mock_sleep):
@@ -107,11 +114,12 @@ class TaskLockAcquireContextManagerTest(TestCase):
         # Sleep should be called after exception
         mock_sleep.assert_called_once()
 
-class TaskIntegrationWithEagerModeTest(TestCase):
+class TaskIntegrationWithEagerModeTest(BaseTestCase):
     """Test tasks using Celery's eager mode (synchronous execution)."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
         self.maintainer = Maintainer.objects.create(
             github_account_id=1,
             github_user_json='{}',
@@ -119,6 +127,10 @@ class TaskIntegrationWithEagerModeTest(TestCase):
         )
         self.installation_id = 12345
         self.mock_redis_client = MockRedisClient()
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @override_settings(CELERY_TASK_ALWAYS_EAGER=True)
     @patch('sponsoredissues.tasks.github_sync_app_installation')
@@ -134,11 +146,12 @@ class TaskIntegrationWithEagerModeTest(TestCase):
         # Verify sync was called
         mock_sync.assert_called_once_with(self.installation_id)
 
-class TaskAppInstallationSyncTest(TestCase):
+class TaskAppInstallationSyncTest(BaseTestCase):
     """Test normal task execution without Redis."""
 
     def setUp(self):
         """Set up test fixtures."""
+        super().setUp()
         self.maintainer = Maintainer.objects.create(
             github_account_id=1,
             github_user_json='{}',
@@ -154,6 +167,10 @@ class TaskAppInstallationSyncTest(TestCase):
         )
 
         self.mock_redis_client = MockRedisClient()
+
+    def tearDown(self):
+        """Teardown test fixtures."""
+        super().tearDown()
 
     @patch('sponsoredissues.tasks.github_sync_app_installation')
     def test_task_executes_when_lock_acquired(self, mock_sync):
